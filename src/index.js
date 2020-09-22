@@ -33,8 +33,8 @@ class App extends React.Component{
         sessionMinutes = 25;
         displaySeconds = 0;
         this.setState(state=>({
-            breakLength: breakMinutes + ":00",
-            sessionLength: sessionMinutes + ":00",
+            breakLength: breakMinutes,
+            sessionLength: sessionMinutes,
             timerState: false,
             sessionTimer: true,
             minutesLeft: sessionMinutes,
@@ -49,7 +49,7 @@ class App extends React.Component{
             breakMinutes --;
         }
         this.setState(state=>({
-            breakLength: breakMinutes + ":00",
+            breakLength: breakMinutes,
             minutesLeft: sessionMinutes
         }));
     }
@@ -61,7 +61,7 @@ class App extends React.Component{
             sessionMinutes --;
         }
         this.setState(state=>({
-            sessionLength: sessionMinutes + ":00",
+            sessionLength: sessionMinutes,
             minutesLeft: sessionMinutes
         }));
     }
@@ -117,13 +117,13 @@ const LengthSelectors = (props) =>{
                 <label className="buttonSpacing" onClick={props.breakLength} id="break-decrement">&lt;</label>
                 <h2> Break Length </h2>
                 <label className="buttonSpacing" onClick={props.breakLength} id="break-increment">&gt;</label>
-                <p id="break-length">{props.break}</p>
+                <p id="break-length">{props.break + ":00"}</p>
             </div>
             <div className="blockSpacing flex-container" id="session-label">
                 <label className="buttonSpacing" onClick={props.sessionLength} id="session-decrement">&lt;</label>
                 <h2> Session Length </h2>                    
                 <label className="buttonSpacing" onClick={props.sessionLength} id="session-increment">&gt;</label>
-                <p id="session-length">{props.session}</p>
+                <p id="session-length">{props.session + ":00"}</p>
             </div>
         </div> 
     ) ;            
