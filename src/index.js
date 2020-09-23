@@ -24,7 +24,7 @@ class App extends React.Component{
         this.handleBreakLength = this.handleBreakLength.bind(this)
         this.handleSessionLength = this.handleSessionLength.bind(this)
         this.handlePlay = this.handlePlay.bind(this)
-        // this.handlePause = this.handlePause.bind(this)
+        this.handlePause = this.handlePause.bind(this)
         this.timer = this.timer.bind(this)
     }
     
@@ -70,7 +70,9 @@ class App extends React.Component{
         let countDown = setInterval(this.timer, 1000)
     }
 
-    
+    handlePause(){
+        // complete the puasebutton alternate
+    }
 
     timer(){  
         this.state.secondsLeft > 0 ? this.setState(state=>({
@@ -96,6 +98,7 @@ class App extends React.Component{
                 <Controls 
                 timerState={this.state.timerState}
                 playButton={this.handlePlay}
+                pauseButton={this.handlePause}
                 reset={this.handleReset} />
                 <Footer />
             </div>
@@ -140,7 +143,7 @@ const Timer = (props) =>{
 const Controls = (props) => {
     return (
         <div className="flex-container " id="controls">
-            <label className="controlsSpacing playPause" id="start_stop" onClick={!props.timerState ? props.playButton : props.pauseButton} >
+            <label className="controlsSpacing playPause" id="start_stop" onClick={!props.timerState ? props.playButton : props.pauseButton}>
                 <i className="fa fa-play"/>
                 <i className="fa fa-pause"/>
             </label>
