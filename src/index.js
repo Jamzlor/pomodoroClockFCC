@@ -2,104 +2,28 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css';
 
-// var mise en place
-var breakMinutes = 5;
-var sessionMinutes = 25;
-var displaySeconds = 0;
-
-
-
 class App extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            breakLength: breakMinutes,
-            sessionLength: sessionMinutes,
-            play: false,
-            sessionTimer: true,
-            minutesLeft: sessionMinutes,
-            secondsLeft: displaySeconds
+            breakLength: 5,
+            sessionLength: 25,
+            cycle: "Session",
+            sound: "on",
+            secondsLeft: 0
         }
-        this.handleReset = this.handleReset.bind(this)
-        this.handleBreakLength = this.handleBreakLength.bind(this)
-        this.handleSessionLength = this.handleSessionLength.bind(this)
-        this.handlePlay = this.handlePlay.bind(this)
-        this.handlePause = this.handlePause.bind(this)
-        this.timer = this.timer.bind(this)
     }
-    
-    handleReset(){
-        breakMinutes = 5;
-        sessionMinutes = 25;
-        displaySeconds = 0;
-        this.setState(state=>({
-            breakLength: breakMinutes,
-            sessionLength: sessionMinutes,
-            timerState: false,
-            sessionTimer: true,
-            minutesLeft: sessionMinutes,
-            secondsLeft: displaySeconds
-        }));
-    }
-    
-    handleBreakLength(e){
-        if(e.target.id === "break-increment"){
-            breakMinutes ++;
-        } else {
-            breakMinutes --;
-        }
-        this.setState(state=>({
-            breakLength: breakMinutes,
-            minutesLeft: sessionMinutes
-        }));
-    }
-    
-    handleSessionLength(e){
-        if(e.target.id === "session-increment"){
-            sessionMinutes ++;
-        } else {
-            sessionMinutes --;
-        }
-        this.setState(state=>({
-            sessionLength: sessionMinutes,
-            minutesLeft: sessionMinutes
-        }));
-    }
-    
-    handlePlay(){
-        let countDown = setInterval(this.timer, 1000)
-    }
-
-    handlePause(){
-        // complete the puasebutton alternate
-    }
-
-    timer(){  
-        this.state.secondsLeft > 0 ? this.setState(state=>({
-                 secondsLeft : state.secondsLeft-1
-            })) : this.setState(state=>({
-                minutesLeft : state.minutesLeft - 1,
-                secondsLeft : state.secondsLeft + 59
-            }))                  
-    }
-    
-    
 
     render(){
         return(
             <div id="wrapper">
                 <Title />
-                <LengthSelectors breakLength={this.handleBreakLength}
-                sessionLength={this.handleSessionLength}
+                <LengthSelectors 
                 break={this.state.breakLength} 
                 session={this.state.sessionLength} />
-                <Timer minutesLeft={this.state.minutesLeft}
+                <Timer minutesLeft={this.state.sessionLength}
                 secondsLeft={this.state.secondsLeft} />
-                <Controls 
-                timerState={this.state.timerState}
-                playButton={this.handlePlay}
-                pauseButton={this.handlePause}
-                reset={this.handleReset} />
+                <Controls />
                 <Footer />
             </div>
         );
@@ -143,11 +67,11 @@ const Timer = (props) =>{
 const Controls = (props) => {
     return (
         <div className="flex-container " id="controls">
-            <label className="controlsSpacing playPause" id="start_stop" onClick={!props.timerState ? props.playButton : props.pauseButton}>
+            <label className="controlsSpacing playPause" id="start_stop">
                 <i className="fa fa-play"/>
                 <i className="fa fa-pause"/>
             </label>
-            <label className="controlsSpacing" id="reset" onClick={props.reset}>Reset</label>
+            <label className="controlsSpacing" id="reset">Reset</label>
         </div>
     );
 }
