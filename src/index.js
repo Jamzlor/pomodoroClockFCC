@@ -11,7 +11,35 @@ class App extends React.Component{
             cycle: "Session",
             sound: "on",
             secondsLeft: 0
-        }
+        };
+        this.handleSessionDecrease = this.handleSessionDecrease.bind(this);
+        this.handleSessionIncrease = this.handleSessionIncrease.bind(this);
+        this.handleBreakDecrease = this.handleBreakDecrease.bind(this);
+        this.handleBreakIncrease = this.handleBreakIncrease.bind(this);
+    }
+
+    handleSessionIncrease() {
+        this.setState(state => ({
+            sessionLength : this.state.sessionLength + 1
+        }));
+    }
+
+    handleSessionDecrease() {
+        this.setState(state => ({
+            sessionLength : this.state.sessionLength - 1
+        }));
+    }
+
+    handleBreakIncrease() {
+        this.setState(state => ({
+            breakLength : this.state.breakLength + 1
+        }));
+    }
+
+    handleBreakDecrease() {
+        this.setState(state => ({
+            breakLength : this.state.breakLength - 1
+        }));
     }
 
     render(){
@@ -19,6 +47,10 @@ class App extends React.Component{
             <div id="wrapper">
                 <Title />
                 <LengthSelectors 
+                sessionIncrease={this.handleSessionIncrease}
+                sessionDecrease={this.handleSessionDecrease}
+                breakIncrease={this.handleBreakIncrease}
+                breakDecrease={this.handleBreakDecrease}
                 break={this.state.breakLength} 
                 session={this.state.sessionLength} />
                 <Timer minutesLeft={this.state.sessionLength}
@@ -41,15 +73,15 @@ const LengthSelectors = (props) =>{
     return(
         <div className="flex-container" id="lengthSelectors">
             <div className="blockSpacing flex-container" id="break-label">
-                <label className="buttonSpacing" onClick={props.breakLength} id="break-decrement">&lt;</label>
+                <label className="buttonSpacing" onClick={props.breakDecrease} id="break-decrement">&lt;</label>
                 <h2> Break Length </h2>
-                <label className="buttonSpacing" onClick={props.breakLength} id="break-increment">&gt;</label>
+                <label className="buttonSpacing" onClick={props.breakIncrease} id="break-increment">&gt;</label>
                 <p id="break-length">{props.break + ":00"}</p>
             </div>
             <div className="blockSpacing flex-container" id="session-label">
-                <label className="buttonSpacing" onClick={props.sessionLength} id="session-decrement">&lt;</label>
+                <label className="buttonSpacing" onClick={props.sessionDecrease} id="session-decrement">&lt;</label>
                 <h2> Session Length </h2>                    
-                <label className="buttonSpacing" onClick={props.sessionLength} id="session-increment">&gt;</label>
+                <label className="buttonSpacing" onClick={props.sessionIncrease} id="session-increment">&gt;</label>
                 <p id="session-length">{props.session + ":00"}</p>
             </div>
         </div> 
