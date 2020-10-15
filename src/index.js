@@ -10,38 +10,51 @@ class App extends React.Component{
             sessionLength: 25,
             cycle: "Session",
             sound: "on",
-            secondsLeft: 0
+            secondsLeft: 0,
+            playing: false
         };
         this.handleSessionDecrease = this.handleSessionDecrease.bind(this);
         this.handleSessionIncrease = this.handleSessionIncrease.bind(this);
         this.handleBreakDecrease = this.handleBreakDecrease.bind(this);
         this.handleBreakIncrease = this.handleBreakIncrease.bind(this);
+        this.handleReset = this.handleReset.bind(this);
     }
 
     handleSessionIncrease() {
         this.setState(state => ({
-            sessionLength : this.state.sessionLength + 1
+            sessionLength : state.sessionLength + 1
         }));
     }
 
     handleSessionDecrease() {
         this.setState(state => ({
-            sessionLength : this.state.sessionLength - 1
+            sessionLength : state.sessionLength - 1
         }));
     }
 
     handleBreakIncrease() {
         this.setState(state => ({
-            breakLength : this.state.breakLength + 1
+            breakLength : state.breakLength + 1
         }));
     }
 
     handleBreakDecrease() {
         this.setState(state => ({
-            breakLength : this.state.breakLength - 1
+            breakLength : state.breakLength - 1
         }));
     }
 
+    handleReset() {
+        this.setState(state => ({
+            breakLength: 5,
+            sessionLength: 25,
+            cycle: "Session",
+            sound: "on",
+            secondsLeft: 0,
+            playing: false
+        }));
+    }
+    
     render(){
         return(
             <div id="wrapper">
@@ -55,12 +68,12 @@ class App extends React.Component{
                 session={this.state.sessionLength} />
                 <Timer minutesLeft={this.state.sessionLength}
                 secondsLeft={this.state.secondsLeft} />
-                <Controls />
+                <Controls reset={this.handleReset} />
                 <Footer />
             </div>
         );
     }
-}
+    }
 
 // components
 const Title = () =>{
@@ -99,11 +112,11 @@ const Timer = (props) =>{
 const Controls = (props) => {
     return (
         <div className="flex-container " id="controls">
-            <label className="controlsSpacing playPause" id="start_stop">
+            <label className="controlsSpacing playPause" id="start_stop" >
                 <i className="fa fa-play"/>
                 <i className="fa fa-pause"/>
             </label>
-            <label className="controlsSpacing" id="reset">Reset</label>
+            <label className="controlsSpacing" id="reset" onClick={props.reset}>Reset</label>
         </div>
     );
 }
