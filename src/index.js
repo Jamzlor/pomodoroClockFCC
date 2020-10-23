@@ -11,8 +11,9 @@ class App extends React.Component{
             cycle: "Session",
             sound: "on",
             secondsLeft: 0,
-            playing: false
+            timeRunning: false
         };
+
         this.handleSessionDecrease = this.handleSessionDecrease.bind(this);
         this.handleSessionIncrease = this.handleSessionIncrease.bind(this);
         this.handleBreakDecrease = this.handleBreakDecrease.bind(this);
@@ -22,25 +23,29 @@ class App extends React.Component{
 
     handleSessionIncrease() {
         this.setState(state => ({
-            sessionLength : state.sessionLength + 1
+            sessionLength : state.sessionLength + 1,
+            cycle: "Session"
         }));
     }
 
     handleSessionDecrease() {
         this.setState(state => ({
-            sessionLength : state.sessionLength - 1
+            sessionLength : state.sessionLength - 1,
+            cycle: "Session"
         }));
     }
 
     handleBreakIncrease() {
         this.setState(state => ({
-            breakLength : state.breakLength + 1
+            breakLength : state.breakLength + 1,
+            cycle: "Break"
         }));
     }
 
     handleBreakDecrease() {
         this.setState(state => ({
-            breakLength : state.breakLength - 1
+            breakLength : state.breakLength - 1,
+            cycle: "Break"
         }));
     }
 
@@ -51,9 +56,11 @@ class App extends React.Component{
             cycle: "Session",
             sound: "on",
             secondsLeft: 0,
-            playing: false
+            timeRunning: false
         }));
     }
+
+    // TODO:  playPause function to be added here
     
     render(){
         return(
@@ -66,9 +73,9 @@ class App extends React.Component{
                 breakDecrease={this.handleBreakDecrease}
                 break={this.state.breakLength} 
                 session={this.state.sessionLength} />
-                <Timer minutesLeft={this.state.sessionLength}
+                <Timer minutesLeft={this.state.cycle === "Session" ? this.state.sessionLength : this.state.breakLength}
                 secondsLeft={this.state.secondsLeft} />
-                <Controls reset={this.handleReset} />
+                <Controls reset={this.handleReset}  />
                 <Footer />
             </div>
         );
