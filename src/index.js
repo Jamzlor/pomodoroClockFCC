@@ -2,15 +2,23 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css';
 
+//this function will convert the time from seconds to MM:SS format
+function formattedTime(timeInSec) {
+    var min = Math.floor((timeInSec % 3600) / 60);
+    var sec = Math.floor(timeInSec % 60);
+
+    var time = (min < 10 ? "0" : "") + min + ":" + (sec < 10 ? "0" : "") + sec;
+    return time;
+}
+
 class App extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            breakLength: 5,
-            sessionLength: 25,
+            breakLength: 300,
+            sessionLength: 1500,
             cycle: "Session",
             sound: "on",
-            secondsLeft: 0,
             timeRunning: false
         };
 
@@ -23,44 +31,44 @@ class App extends React.Component{
 
     handleSessionIncrease() {
         this.setState(state => ({
-            sessionLength : state.sessionLength + 1,
-            cycle: "Session"
+            sessionLength : state.sessionLength + 60
         }));
     }
 
     handleSessionDecrease() {
         this.setState(state => ({
-            sessionLength : state.sessionLength - 1,
-            cycle: "Session"
+            sessionLength : state.sessionLength - 60
         }));
     }
 
     handleBreakIncrease() {
         this.setState(state => ({
-            breakLength : state.breakLength + 1,
-            cycle: "Break"
+            breakLength : state.breakLength + 60
         }));
     }
 
     handleBreakDecrease() {
         this.setState(state => ({
-            breakLength : state.breakLength - 1,
-            cycle: "Break"
+            breakLength : state.breakLength - 60
         }));
     }
 
     handleReset() {
         this.setState(state => ({
-            breakLength: 5,
-            sessionLength: 25,
+            breakLength: 300,
+            sessionLength: 1500,
             cycle: "Session",
             sound: "on",
-            secondsLeft: 0,
             timeRunning: false
         }));
     }
 
     // TODO:  playPause function to be added here
+    playPause() {
+        this.setState(state => ({
+
+        }))
+    }
     
     render(){
         return(
@@ -96,13 +104,13 @@ const LengthSelectors = (props) =>{
                 <label className="buttonSpacing" onClick={props.breakDecrease} id="break-decrement">&lt;</label>
                 <h2> Break Length </h2>
                 <label className="buttonSpacing" onClick={props.breakIncrease} id="break-increment">&gt;</label>
-                <p id="break-length">{props.break + ":00"}</p>
+                <p id="break-length">{formattedTime(props.break)}</p>
             </div>
             <div className="blockSpacing flex-container" id="session-label">
                 <label className="buttonSpacing" onClick={props.sessionDecrease} id="session-decrement">&lt;</label>
                 <h2> Session Length </h2>                    
                 <label className="buttonSpacing" onClick={props.sessionIncrease} id="session-increment">&gt;</label>
-                <p id="session-length">{props.session + ":00"}</p>
+                <p id="session-length">{formattedTime(props.session)}</p>
             </div>
         </div> 
     ) ;            
@@ -111,7 +119,7 @@ const LengthSelectors = (props) =>{
 const Timer = (props) =>{
     return (
         <div id="timer-label" className="flex-container">
-            <p id="time-left">{props.minutesLeft + ":" + ("0" + props.secondsLeft).slice(-2)}</p>
+            <p id="time-left">{formattedTime(props.minutesLeft)}</p>
         </div>
     );
 }
