@@ -10,7 +10,7 @@ function formattedTime(timeInSec) {
     var time = (min < 10 ? "0" : "") + min + ":" + (sec < 10 ? "0" : "") + sec;
     return time;
 }
-
+var audio = new Audio('http://www.peter-weinberg.com/files/1014/8073/6015/BeepSound.wav');
 class App extends React.Component{
     constructor(props){
         super(props);
@@ -22,7 +22,6 @@ class App extends React.Component{
             breakLengthSelected: 300,
             sessionLengthSelected: 1500,
             cycle: "Session",
-            sound: "on",
             timeRunning: false
         };
 
@@ -83,7 +82,6 @@ class App extends React.Component{
             breakLengthSelected: 300,
             sessionLengthSelected: 1500,
             cycle: "Session",
-            sound: "on",
             timeRunning: false
         }));
     }
@@ -98,14 +96,14 @@ class App extends React.Component{
         }))
     }
 
-
-    play(){
+    runTimer(){
         if(this.state.cycle === "Session"){
             if(this.state.sessionLength > 0){
                 this.setState(state => ({
                     sessionLength: state.sessionLength - 1
                 }));           
             } else {
+                audio.play();
                 this.toggleSessionBreak();
                 this.setState(state => ({
                     sessionLength: state.sessionLengthSelected
@@ -117,6 +115,7 @@ class App extends React.Component{
                     breakLength: state.breakLength - 1
                 }));
             } else {
+                audio.play();
                 this.toggleSessionBreak();
                 this.setState(state => ({
                     breakLength: state.breakLengthSelected
@@ -128,7 +127,7 @@ class App extends React.Component{
     playButton() {
             if(!this.state.timeRunning){
                 this.myInterval = setInterval(() => {
-                    this.play();
+                    this.runTimer();
                 }, 1000);
                 this.setState(state =>({
                     timeRunning: !state.timeRunning
@@ -145,8 +144,7 @@ class App extends React.Component{
             }));
         }
      
-    }
-    
+    }   
     render(){
         return(
             <div id="wrapper">
