@@ -12,6 +12,9 @@ body{
 label{
     font-size: 24px;
 }
+label:active{
+    color: #16697a;
+}
 
 /* class */
 .flex-container{
@@ -35,6 +38,7 @@ label{
 .fa{
     margin: 8px 0 0;
 }
+
 /* ID */
 #break-length, #session-length{
     width: 100%;

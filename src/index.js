@@ -19,6 +19,8 @@ class App extends React.Component{
             breakLengthDis: 5,
             breakLength: 300,
             sessionLength: 1500,
+            breakLengthSelected: 300,
+            sessionLengthSelected: 1500,
             cycle: "Session",
             sound: "on",
             timeRunning: false
@@ -30,36 +32,45 @@ class App extends React.Component{
         this.handleBreakIncrease = this.handleBreakIncrease.bind(this);
         this.handleReset = this.handleReset.bind(this);
         this.playButton = this.playButton.bind(this);
-        this.play = this.play.bind(this);
         this.pauseButton = this.pauseButton.bind(this);
+        this.toggleSessionBreak = this.toggleSessionBreak.bind(this);
     }
 
     handleSessionIncrease() {
         this.setState(state => ({
             sessionLengthDis: state.sessionLengthDis + 1,
-            sessionLength : state.sessionLength + 60
+            sessionLength : state.sessionLength + 60,
+            sessionLengthSelected: state.sessionLengthSelected + 60
         }));
     }
 
     handleSessionDecrease() {
-        this.setState(state => ({
-            sessionLengthDis: state.sessionLengthDis - 1,
-            sessionLength : state.sessionLength - 60
-        }));
+        if(this.state.sessionLengthDis > 1){
+            this.setState(state => ({
+                sessionLengthDis: state.sessionLengthDis - 1,
+                sessionLength : state.sessionLength - 60,
+                sessionLengthSelected: state.sessionLengthSelected - 60
+            }));
+        }
     }
 
     handleBreakIncrease() {
         this.setState(state => ({
             breakLengthDis: state.breakLengthDis + 1,
-            breakLength : state.breakLength + 60
+            breakLength : state.breakLength + 60,
+            breakLengthSelected: state.breakLengthSelected + 60
         }));
     }
 
     handleBreakDecrease() {
-        this.setState(state => ({
-            breakLengthDis: state.breakLengthDis - 1,
-            breakLength : state.breakLength - 60
-        }));
+        if(this.state.breakLengthDis > 1){
+            this.setState(state => ({
+                breakLengthDis: state.breakLengthDis - 1,
+                breakLength : state.breakLength - 60,
+                breakLengthSelected: state.breakLengthSelected
+            }));
+        }
+        
     }
 
     handleReset() {
@@ -69,32 +80,62 @@ class App extends React.Component{
             breakLengthDis: 5,
             breakLength: 300,
             sessionLength: 1500,
+            breakLengthSelected: 300,
+            sessionLengthSelected: 1500,
             cycle: "Session",
             sound: "on",
             timeRunning: false
         }));
     }
 
-    // TODO:  playPause function to be added here
-    play(){
-            this.setState(state => ({
-                sessionLength: state.sessionLength -1,
-            }));
-            if(!this.state.timeRunning){
-                this.setState(state =>({
-                    timeRunning: !state.timeRunning
-                }))
-            }
+    toggleSessionBreak (){
+        (this.state.cycle === "Session")?
+        this.setState(state => ({
+            cycle: "Break"
+        })) : 
+        this.setState(state => ({
+            cycle: "Session"
+        }))
     }
 
-    
+
+    play(){
+        if(this.state.cycle === "Session"){
+            if(this.state.sessionLength > 0){
+                this.setState(state => ({
+                    sessionLength: state.sessionLength - 1
+                }));           
+            } else {
+                this.toggleSessionBreak();
+                this.setState(state => ({
+                    sessionLength: state.sessionLengthSelected
+                }));
+            }
+        } else {
+            if(this.state.breakLength > 0){
+                this.setState(state => ({
+                    breakLength: state.breakLength - 1
+                }));
+            } else {
+                this.toggleSessionBreak();
+                this.setState(state => ({
+                    breakLength: state.breakLengthSelected
+                }));
+            }
+        }
+    } 
+
     playButton() {
             if(!this.state.timeRunning){
                 this.myInterval = setInterval(() => {
                     this.play();
                 }, 1000);
+                this.setState(state =>({
+                    timeRunning: !state.timeRunning
+                }));
             }
         }
+    
 
     pauseButton() {
         if(this.state.timeRunning){
@@ -128,7 +169,7 @@ class App extends React.Component{
 
 
 // components
-const Title = () =>{
+const Title = (props) =>{
     return(
         <span id="title">Pomodoro Clock</span>
     );
@@ -138,15 +179,15 @@ const LengthSelectors = (props) =>{
     return(
         <div className="flex-container" id="lengthSelectors">
             <div className="blockSpacing flex-container" id="break-label">
-                <label className="buttonSpacing" onClick={props.breakDecrease} id="break-decrement">&lt;</label>
+                <label className="buttonSpacing decrement" onClick={props.breakDecrease} id="break-decrement">&lt;</label>
                 <h2> Break Length </h2>
-                <label className="buttonSpacing" onClick={props.breakIncrease} id="break-increment">&gt;</label>
+                <label className="buttonSpacing increment" onClick={props.breakIncrease} id="break-increment">&gt;</label>
                 <p id="break-length">{props.break}</p>
             </div>
             <div className="blockSpacing flex-container" id="session-label">
-                <label className="buttonSpacing" onClick={props.sessionDecrease} id="session-decrement">&lt;</label>
+                <label className="buttonSpacing decrement" onClick={props.sessionDecrease} id="session-decrement">&lt;</label>
                 <h2> Session Length </h2>                    
-                <label className="buttonSpacing" onClick={props.sessionIncrease} id="session-increment">&gt;</label>
+                <label className="buttonSpacing increment" onClick={props.sessionIncrease} id="session-increment">&gt;</label>
                 <p id="session-length">{props.session}</p>
             </div>
         </div> 
