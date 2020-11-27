@@ -36,11 +36,13 @@ class App extends React.Component{
     }
 
     handleSessionIncrease() {
-        this.setState(state => ({
-            sessionLengthDis: state.sessionLengthDis + 1,
-            sessionLength : state.sessionLength + 60,
-            sessionLengthSelected: state.sessionLengthSelected + 60
-        }));
+        if(this.state.sessionLength < 3600){
+            this.setState(state => ({
+                sessionLengthDis: state.sessionLengthDis + 1,
+                sessionLength : state.sessionLength + 60,
+                sessionLengthSelected: state.sessionLengthSelected + 60
+            }));
+        }
     }
 
     handleSessionDecrease() {
@@ -54,11 +56,13 @@ class App extends React.Component{
     }
 
     handleBreakIncrease() {
-        this.setState(state => ({
-            breakLengthDis: state.breakLengthDis + 1,
-            breakLength : state.breakLength + 60,
-            breakLengthSelected: state.breakLengthSelected + 60
-        }));
+        if(this.state.breakLength < 3600){
+            this.setState(state => ({
+                breakLengthDis: state.breakLengthDis + 1,
+                breakLength : state.breakLength + 60,
+                breakLengthSelected: state.breakLengthSelected + 60
+            }));
+        }
     }
 
     handleBreakDecrease() {
@@ -156,6 +160,7 @@ class App extends React.Component{
                 breakDecrease={this.handleBreakDecrease}
                 break={this.state.breakLengthDis} 
                 session={this.state.sessionLengthDis} />
+                <TimerLabel cycle={this.state.cycle} />
                 <Timer minutesLeft={this.state.cycle === "Session" ? this.state.sessionLength : this.state.breakLength}
                 secondsLeft={this.state.secondsLeft} />
                 <Controls playBtn={this.playButton} pauseBtn={this.pauseButton} reset={this.handleReset}  />
@@ -178,13 +183,13 @@ const LengthSelectors = (props) =>{
         <div className="flex-container" id="lengthSelectors">
             <div className="blockSpacing flex-container" id="break-label">
                 <label className="buttonSpacing decrement" onClick={props.breakDecrease} id="break-decrement">&lt;</label>
-                <h2> Break Length </h2>
+                <h2 id="break-label"> Break Length </h2>
                 <label className="buttonSpacing increment" onClick={props.breakIncrease} id="break-increment">&gt;</label>
                 <p id="break-length">{props.break}</p>
             </div>
             <div className="blockSpacing flex-container" id="session-label">
                 <label className="buttonSpacing decrement" onClick={props.sessionDecrease} id="session-decrement">&lt;</label>
-                <h2> Session Length </h2>                    
+                <h2 id="session-label"> Session Length </h2>                    
                 <label className="buttonSpacing increment" onClick={props.sessionIncrease} id="session-increment">&gt;</label>
                 <p id="session-length">{props.session}</p>
             </div>
@@ -192,9 +197,17 @@ const LengthSelectors = (props) =>{
     ) ;            
 }
 
+const TimerLabel = (props) =>{
+    return (
+        <div id="timer-label">
+            <p>{props.cycle}</p>
+        </div>
+    )
+}
+
 const Timer = (props) =>{
     return (
-        <div id="timer-label" className="flex-container">
+        <div id="timer-display" className="flex-container">
             <p id="time-left">{formattedTime(props.minutesLeft)}</p>
         </div>
     );
@@ -202,7 +215,7 @@ const Timer = (props) =>{
 
 const Controls = (props) => {
     return (
-        <div className="flex-container " id="controls">
+        <div className="flex-container startStop" id="controls">
             <label className="controlsSpacing playPause" onClick={props.playBtn}>
                 <i className="fa fa-play"/>
             </label>

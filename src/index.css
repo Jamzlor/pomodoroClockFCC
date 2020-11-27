@@ -62,6 +62,9 @@ label:active{
     width: 60%;
 }
 #timer-label{
+    font-size: 24px;
+}
+#timer-display{
     color: #cd0a0a;
     margin: 30px auto 0;
     border-radius: 5px;
@@ -106,7 +109,7 @@ label:active{
     #lengthSelectors{
         margin: 0 auto;
     }
-    #timer-label{
+    #timer-display{
         width: 40%;
         height: 60px;
     }
